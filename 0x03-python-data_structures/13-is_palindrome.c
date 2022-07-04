@@ -3,57 +3,72 @@
 #include "lists.h"
 
 /**
- * is_palindrome - Check if a linked list is a palindrome
- * @head: The list
- *
- * Return: 1 if it's a palindrome, 0 otherwise
+ * print_listint - prints all elements of a listint_t list
+ * @h: pointer to head of list
+ * Return: number of nodes
  */
-int is_palindrome(listint_t **head)
+size_t print_listint(const listint_t *h)
 {
-	listint_t *a = *head;
-	listint_t *b = *head;
+    const listint_t *current;
+    unsigned int n; /* number of nodes */
 
-	if (*head == NULL)
-		return (1);
+    current = h;
+    n = 0;
+    while (current != NULL)
+    {
+        printf("%i\n", current->n);
+        current = current->next;
+        n++;
+    }
 
-	while (b && b->next && b->next->next)
-	{
-		a = a->next;
-		b = b->next->next;
-	}
-
-	a = reverse_list(&a);
-	b = *head;
-	while (a && b)
-	{
-		if (a->n != b->n)
-			return (0);
-		a = a->next;
-		b = b->next;
-	}
-
-	return (1);
+    return (n);
 }
 
 /**
- * reverse_list - Reverse a linked list
- * @head: The list
- *
- * Return: Pointer to the new head
+ * add_nodeint_end - adds a new node at the end of a listint_t list
+ * @head: pointer to pointer of first node of listint_t list
+ * @n: integer to be included in new node
+ * Return: address of the new element or NULL if it fails
  */
-listint_t *reverse_list(listint_t **head)
+listint_t *add_nodeint_end(listint_t **head, const int n)
 {
-	listint_t *prev = NULL;
-	listint_t *next = NULL;
+    listint_t *new;
+    listint_t *current;
 
-	while (*head)
-	{
-		next = (*head)->next;
-		(*head)->next = prev;
-		prev = *head;
-		*head = next;
-	}
+    current = *head;
 
-	*head = prev;
-	return (*head);
+    new = malloc(sizeof(listint_t));
+    if (new == NULL)
+        return (NULL);
+
+    new->n = n;
+    new->next = NULL;
+  
+    if (*head == NULL)
+        *head = new;
+    else
+    {
+        while (current->next != NULL)
+            current = current->next;
+        current->next = new;
+    }
+
+    return (new);
+}
+
+/**
+* free_listint - frees a listint_t list
+ * @head: pointer to list to be freed
+ * Return: void
+ */
+void free_listint(listint_t *head)
+{
+    listint_t *current;
+
+    while (head != NULL)
+    {
+        current = head;
+        head = head->next;
+        free(current);
+    }
 }
