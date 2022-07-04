@@ -1,4 +1,6 @@
 #include "lists.h"
+#include "13-main.c"
+#include "linked_lists.c"
 
 /**
  * is_palindrome - function to call check_pal to see if list is palindrome
